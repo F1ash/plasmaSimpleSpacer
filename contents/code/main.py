@@ -7,6 +7,10 @@ from PyKDE4.plasma import Plasma
 from PyKDE4 import plasmascript
 import os.path
 
+UsualStyle = ''
+EditStytle = ''
+SliderStyle = ''
+
 class plasmaSpacer(plasmascript.Applet):
 	def __init__(self, parent = None):
 		plasmascript.Applet.__init__(self, parent)
@@ -18,21 +22,23 @@ class plasmaSpacer(plasmascript.Applet):
 
 	def init(self):
 		self.setImmutability(Plasma.Mutable)
+		# self.setStyleSheet(UsualStyle)
 		self.layout = QGraphicsLinearLayout(self.applet)
 		self.layout.setSpacing(10)
 		self.slider = Plasma.Slider()
 		self.slider.setToolTip('plasmaSimpleSpacer')
+		# self.slider.detStyleSheet(SliderStyle)
 		self.layout.setAlignment(self.slider, Qt.AlignCenter)
 		self.slider.hide()
 
 		if self.formFactor() == Plasma.Horizontal :
 			self.layout.setOrientation(Qt.Horizontal)
 			self.slider.setOrientation(Qt.Horizontal)
-			self.size_ = self.config().readEntry('Width', QString('20')).toInt()[0], self.geometry().height()
+			self.size_ = self.config().readEntry('Width', QString('20')).toInt()[0], 20
 		else :
 			self.layout.setOrientation(Qt.Vertical)
 			self.slider.setOrientation(Qt.Vertical)
-			self.size_ = self.geometry().width(), self.config().readEntry('Height', QString('20')).toInt()[0]
+			self.size_ = 20, self.config().readEntry('Height', QString('20')).toInt()[0]
 
 		#print self.size_[0], self.size_[1]
 		#with open('/dev/shm/plasmaSimpleSpacer.data', 'wb') as f :
@@ -51,11 +57,13 @@ class plasmaSpacer(plasmascript.Applet):
 			self.slider.valueChanged.disconnect(self.resizeSpacer)
 			self.slider.hide()
 			self.layout.removeItem(self.slider)
+			# self.setStyleSheet(UsualStyle)
 		else:
 			self.layout.addItem(self.slider)
 			self.slider.setMaximumSize(self.size_[0] / 2, self.size_[1] / 2)
 			self.slider.show()
 			self.slider.valueChanged.connect(self.resizeSpacer)
+			# self.setStyleSheet(EditStyle)
 			self.setMinimumSize(self.size_[0], self.size_[1])
 			self.resize(self.size_[0], self.size_[1])
 		self.setLayout(self.layout)
@@ -65,7 +73,6 @@ class plasmaSpacer(plasmascript.Applet):
 			self.size_ = 20 + vol * 5.0, 20
 		else :
 			self.size_ = 20, 20 + vol * 5.0
-		#self.slider.setMaximumSize(20,20)
 		self.slider.setMaximumSize(self.size_[0] / 2, self.size_[1] / 2)
 		self.setMinimumSize(self.size_[0], self.size_[1])
 		self.resize(self.size_[0], self.size_[1])
