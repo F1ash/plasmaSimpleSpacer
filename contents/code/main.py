@@ -25,61 +25,60 @@ class plasmaSpacer(plasmascript.Applet):
 		# self.setStyleSheet(UsualStyle)
 		self.layout = QGraphicsLinearLayout(self.applet)
 		self.layout.setSpacing(0)
-		self.slider = Plasma.Slider()
-		self.slider.setToolTip('plasmaSimpleSpacer')
-		# self.slider.detStyleSheet(SliderStyle)
-		self.layout.setAlignment(self.slider, Qt.AlignCenter)
-		self.slider.hide()
 
 		if self.formFactor() == Plasma.Horizontal :
 			self.layout.setOrientation(Qt.Horizontal)
-			self.slider.setOrientation(Qt.Horizontal)
 			self.size_ = self.config().readEntry('Width', QString('20')).toInt()[0], 20
+			self.Control = ControlWidget(Qt.Horizontal, self)
 		else :
 			self.layout.setOrientation(Qt.Vertical)
-			self.slider.setOrientation(Qt.Vertical)
 			self.size_ = 20, self.config().readEntry('Height', QString('20')).toInt()[0]
+			self.Control = ControlWidget(Qt.Vertical, self)
 
-		#print self.size_[0], self.size_[1]
-		#with open('/dev/shm/plasmaSimpleSpacer.data', 'wb') as f :
-		#	f.write(str(self.size_[0]) + ' ' + str(self.size_[1]) + '\n')
 		self.setLayout(self.layout)
 		self.setMinimumSize(self.size_[0], self.size_[1])
 		self.resize(self.size_[0], self.size_[1])
 
 		Plasma.ToolTipManager.self().setContent( self.applet, Plasma.ToolTipContent( \
-								self.slider.toolTip(), \
+								self.Control.slider.toolTip(), \
 								QString(''), self.icon.icon() ) )
 
 	def mouseDoubleClickEvent(self, ev):
 		ev.ignore()
-		if self.slider.isVisible() :
-			self.slider.valueChanged.disconnect(self.resizeSpacer)
-			self.slider.hide()
-			self.layout.removeItem(self.slider)
+		if self.Control.isVisible() :
+			self.Control.hide()
 			# self.setStyleSheet(UsualStyle)
 		else:
-			self.layout.addItem(self.slider)
-			self.slider.setMaximumSize(self.size_[0] / 2, self.size_[1] / 2)
-			self.slider.show()
-			self.slider.valueChanged.connect(self.resizeSpacer)
+			self.Control.move(self.popupPosition(self.Control.size()))
+			self.Control.show()
 			# self.setStyleSheet(EditStyle)
-			self.setMinimumSize(self.size_[0], self.size_[1])
-			self.resize(self.size_[0], self.size_[1])
+
+class ControlWidget(Plasma.Dialog):
+	def __init__(self, orient = Qt.Horizontal, obj = None, parent = None):
+		Plasma.Dialog.__init__(self, parent)
+		self.prnt = obj
+		self.orient = orient
+
+		self.slider = QSlider()
+		self.slider.setOrientation(self.orient)
+		self.slider.setToolTip('plasmaSimpleSpacer')
+		# self.slider.setStyleSheet(SliderStyle)
+		self.slider.valueChanged.connect(self.resizeSpacer)
+		self.layout = QGridLayout()
+		self.layout.setSpacing(0)
+		self.layout.addWidget(self.slider, 0, 0)
 		self.setLayout(self.layout)
 
 	def resizeSpacer(self, vol):
-		if self.formFactor() == Plasma.Horizontal :
-			self.size_ = 20 + vol * 5.0, 20
+		if self.prnt.formFactor() == Plasma.Horizontal :
+			self.prnt.size_ = 20 + vol * 5.0, 20
 		else :
-			self.size_ = 20, 20 + vol * 5.0
-		self.slider.setMaximumSize(self.size_[0] / 2, self.size_[1] / 2)
-		self.setMinimumSize(self.size_[0], self.size_[1])
-		self.resize(self.size_[0], self.size_[1])
-		self.config().writeEntry('Width', self.size_[0])
-		self.config().writeEntry('Height', self.size_[1])
-		# with open('/dev/shm/plasmaSimpleSpacer.data', 'a') as f :
-		#	f.write(str(self.size_[0]) + ' ' + str(self.size_[1]) + '\n')
+			self.prnt.size_ = 20, 20 + vol * 5.0
+		self.prnt.setMinimumSize(self.prnt.size_[0], self.prnt.size_[1])
+		self.prnt.resize(self.prnt.size_[0], self.prnt.size_[1])
+		self.prnt.config().writeEntry('Width', self.prnt.size_[0])
+		self.prnt.config().writeEntry('Height', self.prnt.size_[1])
+		self.prnt.setLayout(self.prnt.layout)
 
 def CreateApplet(parent):
 	return plasmaSpacer(parent)
