@@ -24,7 +24,7 @@ class plasmaSpacer(plasmascript.Applet):
 		self.setImmutability(Plasma.Mutable)
 		# self.setStyleSheet(UsualStyle)
 		self.layout = QGraphicsLinearLayout(self.applet)
-		self.layout.setSpacing(10)
+		self.layout.setSpacing(0)
 		self.slider = Plasma.Slider()
 		self.slider.setToolTip('plasmaSimpleSpacer')
 		# self.slider.detStyleSheet(SliderStyle)
