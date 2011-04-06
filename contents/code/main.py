@@ -7,10 +7,6 @@ from PyKDE4.plasma import Plasma
 from PyKDE4 import plasmascript
 import os.path
 
-UsualStyle = ''
-EditStytle = ''
-SliderStyle = ''
-
 class plasmaSpacer(plasmascript.Applet):
 	def __init__(self, parent = None):
 		plasmascript.Applet.__init__(self, parent)
@@ -22,7 +18,6 @@ class plasmaSpacer(plasmascript.Applet):
 
 	def init(self):
 		self.setImmutability(Plasma.Mutable)
-		# self.setStyleSheet(UsualStyle)
 		self.layout = QGraphicsLinearLayout(self.applet)
 		self.layout.setSpacing(0)
 
@@ -47,11 +42,9 @@ class plasmaSpacer(plasmascript.Applet):
 		ev.ignore()
 		if self.Control.isVisible() :
 			self.Control.hide()
-			# self.setStyleSheet(UsualStyle)
 		else:
 			self.Control.move(self.popupPosition(self.Control.size()))
 			self.Control.show()
-			# self.setStyleSheet(EditStyle)
 
 class ControlWidget(Plasma.Dialog):
 	def __init__(self, orient = Qt.Horizontal, obj = None, parent = None):
@@ -62,7 +55,6 @@ class ControlWidget(Plasma.Dialog):
 		self.slider = QSlider()
 		self.slider.setOrientation(self.orient)
 		self.slider.setToolTip('plasmaSimpleSpacer')
-		# self.slider.setStyleSheet(SliderStyle)
 		self.slider.valueChanged.connect(self.resizeSpacer)
 		self.layout = QGridLayout()
 		self.layout.setSpacing(0)
