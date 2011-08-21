@@ -13,7 +13,7 @@ class plasmaSpacer(plasmascript.Applet):
 		plasmascript.Applet.__init__(self, parent)
 
 		self.kdehome = unicode(KGlobal.dirs().localkdedir())
-		self.iconPath = self.kdehome + '/share/apps/plasma/plasmoids/plasmaSimpleSpacer/contents/icons/Spacer.png'
+		self.iconPath = '/usr/share/kde4/apps/plasma/plasmoids/kde-plasma-spacer/contents/icons/Spacer.png'
 		self.icon = Plasma.IconWidget()
 		self.icon.setIcon(self.iconPath)
 
@@ -60,7 +60,7 @@ class ControlWidget(Plasma.Dialog):
 		self.slider = QSlider()
 		self.slider.setOrientation(self.orient)
 		self.slider.setValue(val_)
-		self.slider.setToolTip('plasmaSimpleSpacer')
+		self.slider.setToolTip('Simple Spacer')
 		self.slider.valueChanged.connect(self.resizeSpacer)
 		self.multiplier = KIntSpinBox(1, 20, 1, self.factor, self)
 		self.multiplier.setToolTip('Multiplier')
