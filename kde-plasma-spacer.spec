@@ -1,6 +1,6 @@
 Name: kde-plasma-spacer
 Version: 0.10
-Release: 1%{?dist}
+Release: 2%{?dist}
 Summary: Simple spacer for KDE panels.
 Summary(ru): Спейсер для панелей KDE.
 Group: Applications/Miscellanious
@@ -39,6 +39,9 @@ make install DESTDIR=$RPM_BUILD_ROOT/usr
 rm -rf $RPM_BUILD_ROOT
 
 %changelog
+
+* Mon Aug 29 2011 Fl@sh <kaperang07@gmail.com> - 1.1.12-2
+- fixed Makefile
 
 * Mon Aug 22 2011 Fl@sh <kaperang07@gmail.com> - 0.10-1
 - Initial build
